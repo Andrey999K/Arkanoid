@@ -31,6 +31,14 @@ function circle(x, y, radius, start, end, color, top, right) {
   this.right = right;
 }
 
+function enemy(x, y, width, height, color) {
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.color = color;
+}
+
 const renderSlider = (x) => {
   ctx.fillStyle = rectangle.color;
   rectangle.x = x;
@@ -39,7 +47,11 @@ const renderSlider = (x) => {
 };
 
 const renderCircle = () => {
-  ctx.clearRect(circ.x - 50, circ.y - 50, circ.radius * 2, circ.radius * 2);
+  ctx.beginPath();
+  ctx.fillStyle = "#1d0c0c";
+  ctx.arc(circ.x, circ.y, circ.radius + 1, circ.start, circ.end);
+  ctx.fill();
+  ctx.closePath();
   ctx.beginPath();
 
   ctx.fillStyle = circ.color;
@@ -69,12 +81,11 @@ const renderCircle = () => {
   }
 
   ctx.arc(circ.x, circ.y, circ.radius, circ.start, circ.end);
-  ctx.stroke();
   ctx.fill();
 };
 
 const hit = () => {
-  console.log(circ.y + circ.radius, rectangle.x, rectangle.x + rectangle.width);
+  //   console.log(circ.y + circ.radius, rectangle.x, rectangle.x + rectangle.width);
   if (circ.y == canvas.height - rectangle.height - circ.radius) {
     if (circ.x >= rectangle.x && circ.x <= rectangle.x + rectangle.width)
       circ.top = true;
@@ -83,6 +94,21 @@ const hit = () => {
     }
   }
   if (circ.y > rectangle.y) gameOver();
+};
+
+const killEnemy = () => {
+  console.log(circ.x + circ.radius, enemy_.x);
+  if (
+    circ.x + circ.radius - enemy_.x >= 1 &&
+    circ.x + circ.radius - enemy_.x <= 3
+  ) {
+    ctx.clearRect(enemy_.x, enemy_.y, enemy_.width, enemy_.height);
+    enemy_.x = 0;
+    enemy_.y = 0;
+    enemy_.width = 0;
+    enemy_.height = 0;
+    circ.right = false;
+  }
 };
 
 const gameOver = () => {
@@ -96,18 +122,21 @@ const gameOver = () => {
 let rectangle = new rect(innerWidth / 2 - 80, innerHeight - 20, 160, 20, "red");
 
 let circ = new circle(50, 200, 50, 0, 2 * Math.PI, "orange", false, true);
-
 ctx.fillStyle = circ.color;
 ctx.arc(circ.x, circ.y, circ.radius, circ.start, circ.end);
-ctx.stroke();
 ctx.fill();
 
 ctx.fillStyle = rectangle.color;
 ctx.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
+let enemy_ = new enemy(500, 500, 200, 200, "green");
+ctx.fillStyle = enemy_.color;
+ctx.fillRect(enemy_.x, enemy_.y, enemy_.width, enemy_.height);
+
 let timerId = setInterval(() => {
   renderCircle();
   hit();
+  killEnemy();
 }, 10);
 
 canvas.addEventListener("mousemove", () => {
