@@ -20,7 +20,7 @@ function rect(x, y, width, height, color) {
   this.color = color;
 }
 
-function circle(x, y, radius, start, end, color, top, right) {
+function circle(x, y, radius, start, end, color, top, right, speed) {
   this.x = x;
   this.y = y;
   this.radius = radius;
@@ -29,6 +29,7 @@ function circle(x, y, radius, start, end, color, top, right) {
   this.color = color;
   this.top = top;
   this.right = right;
+  this.speed = speed;
 }
 
 function enemy(x, y, width, height, color) {
@@ -69,15 +70,15 @@ const renderCircle = () => {
   }
 
   if (circ.top) {
-    circ.y -= 3;
+    circ.y -= circ.speed;
   } else {
-    circ.y += 3;
+    circ.y += circ.speed;
   }
 
   if (circ.right) {
-    circ.x += 3;
+    circ.x += circ.speed;
   } else {
-    circ.x -= 3;
+    circ.x -= circ.speed;
   }
 
   ctx.arc(circ.x, circ.y, circ.radius, circ.start, circ.end);
@@ -96,18 +97,106 @@ const hit = () => {
   if (circ.y > rectangle.y) gameOver();
 };
 
+const deleteEnemies = (i) => {
+  ctx.clearRect(
+    enemies[i].x,
+    enemies[i].y,
+    enemies[i].width,
+    enemies[i].height
+  );
+  enemies[i].x = 0;
+  enemies[i].y = 0;
+  enemies[i].width = 0;
+  enemies[i].height = 0;
+};
+
 const killEnemy = () => {
-  console.log(circ.x + circ.radius, enemy_.x);
-  if (
-    circ.x + circ.radius - enemy_.x >= 1 &&
-    circ.x + circ.radius - enemy_.x <= 3
-  ) {
-    ctx.clearRect(enemy_.x, enemy_.y, enemy_.width, enemy_.height);
-    enemy_.x = 0;
-    enemy_.y = 0;
-    enemy_.width = 0;
-    enemy_.height = 0;
-    circ.right = false;
+  for (let i = 0; i < enemies.length; i++) {
+    // if (
+    //   circ.x + circ.radius - enemies[i].x >= 0 &&
+    //   circ.x + circ.radius - enemies[i].x <= circ.speed &&
+    //   circ.y + circ.radius - enemies[i].y >= 0 &&
+    //   circ.y + circ.radius - enemies[i].y <= circ.speed
+    // ) {
+    //   deleteEnemies(i);
+    //   circ.right = false;
+    // }
+    // if (
+    //   enemies[i].x + enemies[i].width - (circ.x - circ.radius) >= 0 &&
+    //   enemies[i].x + enemies[i].width - (circ.x - circ.radius) <= circ.speed &&
+    //   circ.y + circ.radius - enemies[i].y >= 0 &&
+    //   circ.y + circ.radius - enemies[i].y <= circ.speed
+    // ) {
+    //   deleteEnemies(i);
+    //   circ.right = true;
+    // }
+    // if (
+    // )
+    if (circ.top && circ.right) {
+      //летит вверх вправо
+      if (
+        enemies[i].y + enemies[i].height - (circ.y - circ.radius) >= 0 &&
+        enemies[i].y + enemies[i].height - (circ.y - circ.radius) <
+          circ.speed &&
+        circ.x >= enemies[i].x &&
+        circ.x <= enemies[i].x + enemies[i].width
+      ) {
+        deleteEnemies(i);
+        circ.top = false;
+      }
+
+      if (
+        circ.x + circ.radius - enemies[i].x >= 0 &&
+        circ.x + circ.radius - enemies[i].x < circ.radius &&
+        circ.y >= enemies[i].y &&
+        circ.y <= enemies[i].y + enemies[i].height
+      ) {
+        deleteEnemies(i);
+        circ.right = false;
+      }
+
+      if (
+        enemies[i].x >= circ.x &&
+        enemies[i].y + enemies[i].height <= circ.y &&
+        Math.pow(enemies[i].x - circ.x) +
+          Math.pow(enemies[i].y + enemies[i].height - circ.y) <=
+          Math.pow(circ.radius)
+      ) {
+        deleteEnemies(i);
+        circ.right = false;
+        circ.top = false;
+      }
+    } else if (!circ.top && circ.right) {
+      //летит вниз вправо
+    } else if (circ.top && !circ.right) {
+      console.log(circ.y, enemies[i].y);
+      //летит вверх влево
+      console.log(circ.x);
+      if (
+        enemies[i].y + enemies[i].height - (circ.y - circ.radius) >= 0 &&
+        enemies[i].y + enemies[i].height - (circ.y - circ.radius) <
+          circ.speed &&
+        circ.x >= enemies[i].x &&
+        circ.x <= enemies[i].x + enemies[i].width
+      ) {
+        deleteEnemies(i);
+        circ.top = false;
+      }
+
+      if (
+        enemies[i].x + enemies[i].width <= circ.x &&
+        enemies[i].y + enemies[i].height <= circ.y &&
+        Math.pow(enemies[i].x + enemies[i].width - circ.x) +
+          Math.pow(enemies[i].y + enemies[i].height - circ.y) <=
+          Math.pow(circ.radius)
+      ) {
+        deleteEnemies(i);
+        circ.right = false;
+        circ.top = false;
+      }
+    } else if (!circ.top && !circ.right) {
+      //летит вниз влево
+    }
   }
 };
 
@@ -121,7 +210,7 @@ const gameOver = () => {
 
 let rectangle = new rect(innerWidth / 2 - 80, innerHeight - 20, 160, 20, "red");
 
-let circ = new circle(50, 200, 50, 0, 2 * Math.PI, "orange", false, true);
+let circ = new circle(1000, 600, 50, 0, 2 * Math.PI, "orange", true, false, 3);
 ctx.fillStyle = circ.color;
 ctx.arc(circ.x, circ.y, circ.radius, circ.start, circ.end);
 ctx.fill();
@@ -129,15 +218,22 @@ ctx.fill();
 ctx.fillStyle = rectangle.color;
 ctx.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
-let enemy_ = new enemy(500, 500, 200, 200, "green");
-ctx.fillStyle = enemy_.color;
-ctx.fillRect(enemy_.x, enemy_.y, enemy_.width, enemy_.height);
+let enemies = [6];
+
+for (let i = 0; i < 6; i++) {
+  enemies[i] = new enemy(500 + i * 100, 500, 50, 25, "green");
+  ctx.beginPath();
+  ctx.fillStyle = enemies[i].color;
+  ctx.fillRect(enemies[i].x, enemies[i].y, enemies[i].width, enemies[i].height);
+}
+
+console.log(enemies);
 
 let timerId = setInterval(() => {
   renderCircle();
   hit();
   killEnemy();
-}, 10);
+}, 1000);
 
 canvas.addEventListener("mousemove", () => {
   renderSlider(event.clientX - 80);
