@@ -1,0 +1,17 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    background: #1d0c0c;
+    min-height: 100vh;
+    font-family: sans-serif;
+}
+
+.gameOver {
+    color: red;
+    font-size: 100px;
+}
