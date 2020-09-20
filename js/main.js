@@ -119,146 +119,16 @@ const deleteEnemies = (i) => {
 };
 
 const killEnemy = () => {
-    //вверх влево
-    if (circ.top && !circ.right) {
+    if (circ.top && circ.right) { //ВВЕРХ ВПРАВО
 
-        for (let i = 0; i < enemies.length; i++) {
+    } else if (circ.top && !circ.right) { //ВВЕРХ ВЛЕВО
 
-            //УДАРЯЕТСЯ ВЕРХНЕЙ ТОЧКОЙ
-            // if (enemies[i].y2 - (circ.y - circ.radius) >= 0 &&
-            //     enemies[i].y2 - (circ.y - circ.radius) < circ.speed &&
-            //     circ.x >= enemies[i].x && circ.x <= enemies[i].x2) {
-            //     deleteEnemies(i);
-            //     circ.top = false;
-            // }
-            // //УДАРЯЕТСЯ ЛЕВОЙ ТОЧКОЙ
-            // if (enemies[i].x2 - (circ.x - circ.radius) >= 0 &&
-            //     enemies[i].x2 - (circ.x - circ.radius) < circ.speed &&
-            //     circ.y >= enemies[i].y && circ.y <= enemies[i].y2
-            // ) {
-            //     deleteEnemies(i);
-            //     circ.right = true;
-            // }
+    } else if (circ.top && circ.right) { //ВНИЗ ВПРАВО
 
-            // console.log(enemies[2].x2, enemies[2].y2);
-            // console.log(Math.pow(enemies[2].x2 - 470, 2) + Math.pow(enemies[2].y2 - 570, 2));
-            // console.log(circ.x, circ.y);
+    } else if (circ.top && circ.right) { //ВНИЗ ВЛЕВО
 
-            // if (Math.pow(enemies[i].x2 - circ.x) + Math.pow(enemies[i].y2 - circ.y) <= Math.pow(circ.radius) &&
-            //     enemies[i].x2 <= circ.x && enemies[i].y2 <= circ.y
-            // ) {
-            //     deleteEnemies(i);
-            //     circ.right = true;
-            //     circ.top = false;
-            // }
-
-            // if (
-            //     enemies[i].y2 - (circ.y - circ.radius) >= 0 &&
-            //     enemies[i].y2 - (circ.y - circ.radius) <= circ.radius &&
-            //     circ.x - circ.radius >= enemies[i].x && circ.x - circ.radius <= enemies[i].x2
-            // ) {
-            //     deleteEnemies(i);
-            //     circ.top = false;
-            // }
-
-            if (
-                enemies[i].x2 - (circ.x - circ.radius) >= 0 &&
-                enemies[i].x2 - (circ.x - circ.radius) <= circ.radius &&
-                enemies[i].y2 - (circ.y - circ.radius) >= 0 &&
-                enemies[i].y2 - (circ.y - circ.radius) <= circ.speed
-            ) {
-                deleteEnemies(i);
-                circ.right = true;
-            }
-        }
     }
 
-    //   for (let i = 0; i < enemies.length; i++) {
-    //     // if (
-    //     //   circ.x + circ.radius - enemies[i].x >= 0 &&
-    //     //   circ.x + circ.radius - enemies[i].x <= circ.speed &&
-    //     //   circ.y + circ.radius - enemies[i].y >= 0 &&
-    //     //   circ.y + circ.radius - enemies[i].y <= circ.speed
-    //     // ) {
-    //     //   deleteEnemies(i);
-    //     //   circ.right = false;
-    //     // }
-    //     // if (
-    //     //   enemies[i].x + enemies[i].width - (circ.x - circ.radius) >= 0 &&
-    //     //   enemies[i].x + enemies[i].width - (circ.x - circ.radius) <= circ.speed &&
-    //     //   circ.y + circ.radius - enemies[i].y >= 0 &&
-    //     //   circ.y + circ.radius - enemies[i].y <= circ.speed
-    //     // ) {
-    //     //   deleteEnemies(i);
-    //     //   circ.right = true;
-    //     // }
-    //     // if (
-    //     // )
-    //     if (circ.top && circ.right) {
-    //       //летит вверх вправо
-    //       if (
-    //         enemies[i].y + enemies[i].height - (circ.y - circ.radius) >= 0 &&
-    //         enemies[i].y + enemies[i].height - (circ.y - circ.radius) <
-    //           circ.speed &&
-    //         circ.x >= enemies[i].x &&
-    //         circ.x <= enemies[i].x + enemies[i].width
-    //       ) {
-    //         deleteEnemies(i);
-    //         circ.top = false;
-    //       }
-
-    //       if (
-    //         circ.x + circ.radius - enemies[i].x >= 0 &&
-    //         circ.x + circ.radius - enemies[i].x < circ.radius &&
-    //         circ.y >= enemies[i].y &&
-    //         circ.y <= enemies[i].y + enemies[i].height
-    //       ) {
-    //         deleteEnemies(i);
-    //         circ.right = false;
-    //       }
-
-    //       if (
-    //         enemies[i].x >= circ.x &&
-    //         enemies[i].y + enemies[i].height <= circ.y &&
-    //         Math.pow(enemies[i].x - circ.x) +
-    //           Math.pow(enemies[i].y + enemies[i].height - circ.y) <=
-    //           Math.pow(circ.radius)
-    //       ) {
-    //         deleteEnemies(i);
-    //         circ.right = false;
-    //         circ.top = false;
-    //       }
-    //     } else if (!circ.top && circ.right) {
-    //       //летит вниз вправо
-    //     } else if (circ.top && !circ.right) {
-    //       console.log(circ.y, enemies[i].y);
-    //       //летит вверх влево
-    //       if (
-    //         enemies[i].y + enemies[i].height - (circ.y - circ.radius) >= 0 &&
-    //         enemies[i].y + enemies[i].height - (circ.y - circ.radius) <
-    //           circ.speed &&
-    //         circ.x >= enemies[i].x &&
-    //         circ.x <= enemies[i].x + enemies[i].width
-    //       ) {
-    //         deleteEnemies(i);
-    //         circ.top = false;
-    //       }
-
-    //       if (
-    //         enemies[i].x + enemies[i].width <= circ.x &&
-    //         enemies[i].y + enemies[i].height <= circ.y &&
-    //         Math.pow(enemies[i].x + enemies[i].width - circ.x) +
-    //           Math.pow(enemies[i].y + enemies[i].height - circ.y) <=
-    //           Math.pow(circ.radius)
-    //       ) {
-    //         deleteEnemies(i);
-    //         circ.right = false;
-    //         circ.top = false;
-    //       }
-    //     } else if (!circ.top && !circ.right) {
-    //       //летит вниз влево
-    //     }
-    //   }
 };
 
 const gameOver = () => {
@@ -290,12 +160,30 @@ for (let i = 0; i < 6; i++) {
 
 console.log(enemies);
 
-let timerId = setInterval(() => {
-    renderCircle();
-    hit();
-    killEnemy();
-}, 50);
+// let timerId = setInterval(() => {
+//     renderCircle();
+//     hit();
+//     killEnemy();
+// }, 50);
+
+
+//ФУНКЦИЯ ДЛЯ УДАЛЕНИЯ
+const circleMove = (x, y) => {
+    ctx.beginPath();
+    ctx.fillStyle = "#1d0c0c";
+    ctx.arc(circ.x, circ.y, circ.radius + 1, circ.start, circ.end);
+    ctx.fill();
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.fillStyle = circ.color;
+    circ.x = x;
+    circ.y = y;
+    ctx.arc(circ.x, circ.y, circ.radius, circ.start, circ.end);
+    ctx.fill();
+};
 
 canvas.addEventListener("mousemove", () => {
     renderSlider(event.clientX - 80);
+    circleMove(event.clientX, event.clientY);
+    console.log(circ.x, circ.y);
 });
